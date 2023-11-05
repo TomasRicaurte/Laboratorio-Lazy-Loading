@@ -1,9 +1,11 @@
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import AboutPage from "./pages/AboutPage";
-import HomePage from "./pages/HomePage";
 import NotFound from "./pages/NotFound";
 
 export function App() {
+  const HomePage = React.lazy(() => import("./pages/HomePage"));
+
   return (
     <BrowserRouter>
       <div>
@@ -19,7 +21,14 @@ export function App() {
         </nav>
 
         <Routes>
-          <Route index element={<HomePage />} />
+          <Route
+            index
+            element={
+              <Suspense fallback="loading...">
+                <HomePage />
+              </Suspense>
+            }
+          />
           <Route path="about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
